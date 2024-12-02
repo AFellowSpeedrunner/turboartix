@@ -2,15 +2,17 @@
 
 
 cat << EOF
-  ______           __          ___              __  
- /_  __/_  _______/ /_  ____  /   |  __________/ /_ 
-  / / / / / / ___/ __ \/ __ \/ /| | / ___/ ___/ __ \\
- / / / /_/ / /  / /_/ / /_/ / ___ |/ /  / /__/ / / /
-/_/  \__,_/_/  /_.___/\____/_/  |_/_/   \___/_/ /_/ 
 
-TurboArch Release Candidate 5 ( https://evgvs.com/ )
-
-Copyright (C) 2024 Evgeny Vasilievich LINUX PIMP
+░▒▓████████▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓███████▓▒░░▒▓███████▓▒░ ░▒▓██████▓▒░ ░▒▓██████▓▒░░▒▓███████▓▒░▒▓████████▓▒░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░ 
+   ░▒▓█▓▒░   ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░   ░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░ 
+   ░▒▓█▓▒░   ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░   ░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░ 
+   ░▒▓█▓▒░   ░▒▓█▓▒░░▒▓█▓▒░▒▓███████▓▒░░▒▓███████▓▒░░▒▓█▓▒░░▒▓█▓▒░▒▓████████▓▒░▒▓███████▓▒░  ░▒▓█▓▒░   ░▒▓█▓▒░░▒▓██████▓▒░  
+   ░▒▓█▓▒░   ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░   ░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░ 
+   ░▒▓█▓▒░   ░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░   ░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░ 
+   ░▒▓█▓▒░    ░▒▓██████▓▒░░▒▓█▓▒░░▒▓█▓▒░▒▓███████▓▒░ ░▒▓██████▓▒░░▒▓█▓▒░░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░ ░▒▓█▓▒░   ░▒▓█▓▒░▒▓█▓▒░░▒▓█▓▒░ 
+                                                                                                                            
+                                                                                                                           
+TurboArtix Install Wizard
 
 EOF
 
@@ -64,7 +66,6 @@ if [ ! -f config.default ]; then
 
       ((normaluid+=1))
 
-      # getent shadow есть только в glibc
       getent gshadow &> /dev/null
       if [[ "$?" == "1" ]]; then
         grep "^$d:" /etc/gshadow >> gshadow_delta
@@ -79,26 +80,21 @@ if [ ! -f config.default ]; then
   fi
 
   NETWORKMANAGER=1
-  read -p "Do you want to install GNOME? [Y/n] " -r yn
+  read -p "Do you want to use NetworkManager? [Y/n] " -r yn
   if [[ $yn == [Nn]* ]]; then 
-    GNOME=0
-    read -p "Do you want to use NetworkManager? [Y/n] " -r yn
-    if [[ $yn == [Nn]* ]]; then 
-      NETWORKMANAGER=0
-    fi
+    NETWORKMANAGER=0
+  fi
   else
-    GNOME=1
     NETWORKMANAGER=1
   fi
 
-  read -p "Set hostname for new system: [archlinux] " -r NEWHOSTNAME
+  read -p "Set hostname for new system: [artixlinux] " -r NEWHOSTNAME
   if [ -z "$NEWHOSTNAME" ]; then
-    NEWHOSTNAME=archlinux
+    NEWHOSTNAME=artixlinux
   fi
 
   LOCALTIME=$(cat /etc/timezone 2> /dev/null)
   if [ -z "$LOCALTIME" ]; then
-    # закостылено потому что в некоторых особенно парашных дистрах в timedatectl за каким-то хуем нет операции show
     LOCALTIME="$(timedatectl | grep 'Time zone' | sed 's/.*Time zone: //;s/ .*//')"
     LOCALTIME="${LOCALTIME#*=}"
   fi
